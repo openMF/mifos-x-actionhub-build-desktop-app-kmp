@@ -1,67 +1,107 @@
-# KMP Build Desktop App GitHub Action
+# KMP Desktop Build Action
 
 ## Overview
 
-This GitHub Action is designed to build desktop applications for multiple platforms (Windows, Linux, MacOS) using Kotlin Multiplatform (KMP) and Gradle. It automates the process of setting up the development environment, building the application, and uploading platform-specific artifacts.
+This GitHub Action automates the build process for cross-platform desktop applications, supporting multiple operating systems and build configurations.
 
 ## Features
 
-- Sets up Java 17 development environment using Zulu OpenJDK
-- Configures Gradle build system
-- Implements caching to speed up subsequent builds
-- Packages desktop application for the current operating system
-- Uploads platform-specific executables and installers as artifacts
+- 🖥️ Cross-platform support (Windows, macOS, Linux)
+- 🛠️ Flexible build type configuration (Debug/Release)
+- 📦 Automatic artifact generation and upload
+- 🚀 Gradle build caching for improved performance
 
 ## Inputs
 
 ### `desktop_package_name`
 - **Description**: Name of the desktop project module
-- **Required**: Yes
-- **Type**: String
+- **Required**: `true`
+- **Type**: `string`
+- **Example**: `'mydesktopapp'`
 
-## Platforms Supported
+### `build_type`
+- **Description**: Type of build to perform
+- **Required**: `false`
+- **Default**: `'Debug'`
+- **Accepted Values**:
+   - `'Debug'`
+   - `'Release'`
 
-- Windows
-- Linux (Ubuntu)
-- macOS
+## Outputs
 
-## Usage Example
+### Platform-Specific App Paths
+- `windows_app`: Path to Windows executable/installer
+- `linux_app`: Path to Linux package
+- `macos_app`: Path to macOS package
 
+### Platform-Specific Artifact Names
+- **Windows**: `Windows-Apps`
+   - Contains: `.exe` and `.msi` files
+- **Linux**: `Linux-App`
+   - Contains: `.deb` files
+- **macOS**: `MacOS-App`
+   - Contains: `.dmg` files
+
+## Usage Examples
+
+### Basic Debug Build
 ```yaml
-jobs:
-  build-desktop-app:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: openMF/kmp-build-desktop-app-action@v1.0.0
-        with:
-          desktop_package_name: 'my-desktop-module'
+  build_desktop:
+     name: Build Desktop App
+     strategy:
+        matrix:
+           os: [ ubuntu-latest, macos-latest, windows-latest ]
+     runs-on: ${{ matrix.os }}
+     steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+          
+        - name: Build Desktop App
+          uses: openMF/kmp-build-desktop-app-action@v1.0.0
+          with:
+            desktop_package_name: 'myapp'
 ```
 
-## Build Process
+### Release Build
+```yaml
+  build_desktop:
+     name: Build Desktop App
+     strategy:
+        matrix:
+           os: [ ubuntu-latest, macos-latest, windows-latest ]
+     runs-on: ${{ matrix.os }}
+     steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
 
-The action performs the following steps:
+        - name: Build Desktop App
+          uses: openMF/kmp-build-desktop-app-action@v1.0.0
+          with:
+            desktop_package_name: 'myapp'
+            build_type: 'Release'
+```
 
-1. Set up Java 17 development environment using Zulu OpenJDK
-2. Configure Gradle build system
-3. Cache Gradle dependencies and build outputs
-4. Package desktop application using `./gradlew packageDistributionForCurrentOS`
-5. Upload platform-specific artifacts:
-    - Windows: `.exe` and `.msi` files
-    - Linux: `.deb` files
-    - macOS: `.dmg` files
+## Best Practices
 
-## Prerequisites
+- Always specify the `desktop_package_name`
+- Use `Release` build type for production distributions
+- Check artifact names carefully when downloading
+- Verify file integrity after download
 
-- A Kotlin Multiplatform project configured for desktop application development
-- Gradle wrapper in the project
-- Gradle task `packageDistributionForCurrentOS` defined for building desktop distributions
+## Troubleshooting
 
-## Recommendations
+### Common Issues
+- Ensure Gradle build script is correctly configured
+- Check that packaging commands match your project structure
+- Verify Java 17 is installed and compatible
 
-- Ensure your Gradle build script includes the necessary configuration for packaging desktop applications
-- Test the action in your project's continuous integration workflow
-- Verify that the `packageDistributionForCurrentOS` task works correctly locally before integrating this action
+### Debugging
+- Review GitHub Actions logs for detailed build information
+- Check Gradle build output for specific errors
+- Ensure all required dependencies are included in the build
+
+## Requirements
+
+- Java 17
+- Gradle
+- Compatible Kotlin Multiplatform Desktop configuration

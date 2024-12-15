@@ -10,14 +10,32 @@ inputs:
     description: 'Name of the desktop project module'
     required: true
 
+  build_type:
+    description: 'Type of build to perform (Debug or Release)'
+    required: false
+    default: 'Debug'
+
+outputs:
+  windows_app:
+    description: 'Path to Windows executable/installer'
+    value: ${{ steps.collect-apps.outputs.windows_app }}
+
+  linux_app:
+    description: 'Path to Linux package'
+    value: ${{ steps.collect-apps.outputs.linux_app }}
+
+  macos_app:
+    description: 'Path to MacOS package'
+    value: ${{ steps.collect-apps.outputs.macos_app }}
+
 runs:
   using: 'composite'
   steps:
     - name: Set up Java development environment
       uses: actions/setup-java@v4
       with:
-        distribution: 'zulu'  # Use Zulu distribution of OpenJDK
-        java-version: '17'     # Use Java 17 version
+        distribution: 'zulu'
+        java-version: '17'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -35,7 +53,32 @@ runs:
 
     - name: Package Desktop App
       shell: bash
-      run: ./gradlew packageDistributionForCurrentOS
+      run: |
+        # Determine the package command based on build type
+        if [[ "${{ inputs.build_type }}" == "Release" ]]; then
+          ./gradlew packageReleaseDistributionForCurrentOS
+        else
+          ./gradlew packageDistributionForCurrentOS
+        fi
+
+    - name: Collect App Paths
+      id: collect-apps
+      shell: bash
+      run: |
+        # Find app paths for each OS
+        windows_app=$(find . -path "**/*.exe" -o -path "**/*.msi" | grep -E "windows|win" | head -n 1)
+        linux_app=$(find . -path "**/*.deb" | head -n 1)
+        macos_app=$(find . -path "**/*.dmg" | head -n 1)
+
+        # Output app paths
+        echo "windows_app=${windows_app}" >> $GITHUB_OUTPUT
+        echo "linux_app=${linux_app}" >> $GITHUB_OUTPUT
+        echo "macos_app=${macos_app}" >> $GITHUB_OUTPUT
+
+        # Print for logging
+        echo "Windows App: ${windows_app}"
+        echo "Linux App: ${linux_app}"
+        echo "MacOS App: ${macos_app}"
 
     # Upload Windows executables and installers
     - name: Upload Windows Apps
