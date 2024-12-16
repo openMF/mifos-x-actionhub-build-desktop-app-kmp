@@ -11,37 +11,6 @@ This GitHub Action automates the build process for cross-platform desktop applic
 - 📦 Automatic artifact generation and upload
 - 🚀 Gradle build caching for improved performance
 
-## Inputs
-
-### `desktop_package_name`
-- **Description**: Name of the desktop project module
-- **Required**: `true`
-- **Type**: `string`
-- **Example**: `'mydesktopapp'`
-
-### `build_type`
-- **Description**: Type of build to perform
-- **Required**: `false`
-- **Default**: `'Debug'`
-- **Accepted Values**:
-   - `'Debug'`
-   - `'Release'`
-
-## Outputs
-
-### Platform-Specific App Paths
-- `windows_app`: Path to Windows executable/installer
-- `linux_app`: Path to Linux package
-- `macos_app`: Path to macOS package
-
-### Platform-Specific Artifact Names
-- **Windows**: `Windows-Apps`
-   - Contains: `.exe` and `.msi` files
-- **Linux**: `Linux-App`
-   - Contains: `.deb` files
-- **macOS**: `MacOS-App`
-   - Contains: `.dmg` files
-
 ## Usage Examples
 
 ### Basic Debug Build
@@ -80,6 +49,32 @@ This GitHub Action automates the build process for cross-platform desktop applic
             desktop_package_name: 'myapp'
             build_type: 'Release'
 ```
+
+## Inputs
+
+### `desktop_package_name`
+- **Description**: Name of the desktop project module
+- **Required**: `true`
+- **Type**: `string`
+- **Example**: `'mydesktopapp'`
+
+### `build_type`
+- **Description**: Type of build to perform
+- **Required**: `false`
+- **Default**: `'Debug'`
+- **Accepted Values**:
+   - `'Debug'`
+   - `'Release'`
+
+## Outputs
+
+### Platform-Specific Artifact Names
+- **Windows**: `Windows-Apps`
+   - Contains: `.exe` and `.msi` files
+- **Linux**: `Linux-App`
+   - Contains: `.deb` files
+- **macOS**: `MacOS-App`
+   - Contains: `.dmg` files
 
 ## Best Practices
 
