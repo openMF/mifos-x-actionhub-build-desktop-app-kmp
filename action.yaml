@@ -15,19 +15,6 @@ inputs:
     required: false
     default: 'Debug'
 
-outputs:
-  windows_app:
-    description: 'Path to Windows executable/installer'
-    value: ${{ steps.collect-apps.outputs.windows_app }}
-
-  linux_app:
-    description: 'Path to Linux package'
-    value: ${{ steps.collect-apps.outputs.linux_app }}
-
-  macos_app:
-    description: 'Path to MacOS package'
-    value: ${{ steps.collect-apps.outputs.macos_app }}
-
 runs:
   using: 'composite'
   steps:
@@ -61,31 +48,12 @@ runs:
           ./gradlew packageDistributionForCurrentOS
         fi
 
-    - name: Collect App Paths
-      id: collect-apps
-      shell: bash
-      run: |
-        # Find app paths for each OS
-        windows_app=$(find . -path "**/*.exe" -o -path "**/*.msi" | grep -E "windows|win" | head -n 1)
-        linux_app=$(find . -path "**/*.deb" | head -n 1)
-        macos_app=$(find . -path "**/*.dmg" | head -n 1)
-
-        # Output app paths
-        echo "windows_app=${windows_app}" >> $GITHUB_OUTPUT
-        echo "linux_app=${linux_app}" >> $GITHUB_OUTPUT
-        echo "macos_app=${macos_app}" >> $GITHUB_OUTPUT
-
-        # Print for logging
-        echo "Windows App: ${windows_app}"
-        echo "Linux App: ${linux_app}"
-        echo "MacOS App: ${macos_app}"
-
-    # Upload Windows executables and installers
+    # Upload Windows executables
     - name: Upload Windows Apps
       if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v4
       with:
-        name: Windows-Apps
+        name: desktop-app-${{ matrix.os }}
         path: |
           **/*.exe
           **/*.msi
@@ -95,7 +63,7 @@ runs:
       if: matrix.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v4
       with:
-        name: Linux-App
+        name: desktop-app-${{ matrix.os }}
         path: '**/*.deb'
 
     # Upload MacOS package
@@ -103,5 +71,5 @@ runs:
       if: matrix.os == 'macos-latest'
       uses: actions/upload-artifact@v4
       with:
-        name: MacOS-App
+        name: desktop-app-${{ matrix.os }}
         path: '**/*.dmg'
