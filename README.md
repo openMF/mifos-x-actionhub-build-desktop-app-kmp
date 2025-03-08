@@ -70,6 +70,18 @@ This GitHub Action automates the build process for cross-platform desktop applic
    - `'Debug'`
    - `'Release'`
 
+### `java_distribution`
+- **Description**: Java distribution (for example: terumin, zulu etc.)
+- **Required**: `true`
+- **Type**: `'string'`
+- **Example**: `'zulu'`
+
+### `java_version`
+- **Description**: Java version
+- **Required**: `true`
+- **Type**: `'string'`
+- **Example**: `'17'`
+
 ## Outputs
 
 ### Platform-Specific Artifact Names
