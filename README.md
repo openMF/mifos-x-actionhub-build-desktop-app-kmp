@@ -29,6 +29,8 @@ This GitHub Action automates the build process for cross-platform desktop applic
           uses: openMF/kmp-build-desktop-app-action@v1.0.0
           with:
             desktop_package_name: 'myapp'
+            java_version: '17'
+            java_distribution: 'zulu'
 ```
 
 ### Release Build
@@ -48,6 +50,8 @@ This GitHub Action automates the build process for cross-platform desktop applic
           with:
             desktop_package_name: 'myapp'
             build_type: 'Release'
+            java_version: '17'
+            java_distribution: 'zulu'
 ```
 
 ## Inputs
@@ -65,6 +69,18 @@ This GitHub Action automates the build process for cross-platform desktop applic
 - **Accepted Values**:
    - `'Debug'`
    - `'Release'`
+
+### `java_distribution`
+- **Description**: Java distribution (for example: terumin, zulu etc.)
+- **Required**: `true`
+- **Type**: `'string'`
+- **Example**: `'zulu'`
+
+### `java_version`
+- **Description**: Java version
+- **Required**: `true`
+- **Type**: `'string'`
+- **Example**: `'17'`
 
 ## Outputs
 
@@ -88,7 +104,7 @@ This GitHub Action automates the build process for cross-platform desktop applic
 ### Common Issues
 - Ensure Gradle build script is correctly configured
 - Check that packaging commands match your project structure
-- Verify Java 17 is installed and compatible
+- Verify Java is installed and compatible
 
 ### Debugging
 - Review GitHub Actions logs for detailed build information
@@ -97,6 +113,6 @@ This GitHub Action automates the build process for cross-platform desktop applic
 
 ## Requirements
 
-- Java 17
+- Java
 - Gradle
 - Compatible Kotlin Multiplatform Desktop configuration

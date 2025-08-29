@@ -15,14 +15,22 @@ inputs:
     required: false
     default: 'Debug'
 
+  java_distribution:
+    description: 'Java distribution (for example: terumin, zulu etc.)'
+    required: true
+
+  java_version:
+    description: 'Java version'
+    required: true
+
 runs:
   using: 'composite'
   steps:
     - name: Set up Java development environment
       uses: actions/setup-java@v4
       with:
-        distribution: 'zulu'
-        java-version: '17'
+        distribution: ${{ inputs.java_distribution }}
+        java-version: ${{ inputs.java_version }}
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
