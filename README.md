@@ -26,7 +26,7 @@ This GitHub Action automates the build process for cross-platform desktop applic
           uses: actions/checkout@v4
           
         - name: Build Desktop App
-          uses: openMF/mifos-x-actionhub-build-desktop-app@v1.0.1
+          uses: openMF/mifos-x-actionhub-build-desktop-app-kmp@v1.0.1
           with:
             desktop_package_name: 'myapp'
 ```
@@ -44,7 +44,7 @@ This GitHub Action automates the build process for cross-platform desktop applic
           uses: actions/checkout@v4
 
         - name: Build Desktop App
-          uses: openMF/mifos-x-actionhub-build-desktop-app@v1.0.1
+          uses: openMF/mifos-x-actionhub-build-desktop-app-kmp@v1.0.1
           with:
             desktop_package_name: 'myapp'
             build_type: 'Release'
