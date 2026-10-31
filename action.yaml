@@ -55,7 +55,7 @@ runs:
 
     # Upload Windows executables
     - name: Upload Windows Apps
-      if: matrix.os == 'windows-latest'
+      if: runner.os == 'Windows'
       uses: actions/upload-artifact@v6
       with:
         name: desktop-app-${{ matrix.os }}
@@ -65,7 +65,7 @@ runs:
 
     # Upload Linux package
     - name: Upload Linux App
-      if: matrix.os == 'ubuntu-latest'
+      if: runner.os == 'Linux'
       uses: actions/upload-artifact@v6
       with:
         name: desktop-app-${{ matrix.os }}
@@ -73,7 +73,7 @@ runs:
 
     # Upload MacOS package
     - name: Upload MacOS App
-      if: matrix.os == 'macos-latest'
+      if: runner.os == 'macOS'
       uses: actions/upload-artifact@v6
       with:
         name: desktop-app-${{ matrix.os }}

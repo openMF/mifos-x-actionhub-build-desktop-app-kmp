@@ -19,7 +19,7 @@ This GitHub Action automates the build process for cross-platform desktop applic
      name: Build Desktop App
      strategy:
         matrix:
-           os: [ ubuntu-latest, macos-latest, windows-latest ]
+           os: [ ubuntu-26.04, macos-latest, windows-latest ]
      runs-on: ${{ matrix.os }}
      steps:
         - name: Checkout Repository
@@ -37,7 +37,7 @@ This GitHub Action automates the build process for cross-platform desktop applic
      name: Build Desktop App
      strategy:
         matrix:
-           os: [ ubuntu-latest, macos-latest, windows-latest ]
+           os: [ ubuntu-26.04, macos-latest, windows-latest ]
      runs-on: ${{ matrix.os }}
      steps:
         - name: Checkout Repository
